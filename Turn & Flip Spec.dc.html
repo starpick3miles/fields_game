@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/broadsheet-919da015-e8fa-4992-8e46-960ca11ecfe9/styles.css">
+<script src="_ds/broadsheet-919da015-e8fa-4992-8e46-960ca11ecfe9/_ds_bundle.js"></script>
+<style>
+body{margin:0;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body)}
+a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
+</style>
+</helmet>
+<div style="max-width:920px;padding:48px 32px 96px;display:flex;flex-direction:column;gap:56px">
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-accent-700)">Spec · Turn &amp; Flip · v2 (built, tried on the iPad)</div>
+    <h1 style="margin:0;font-size:46px;line-height:1.05;letter-spacing:-0.015em">Turn &amp; Flip: teacher demo on iPad</h1>
+    <p style="margin:0;font-size:19px;line-height:1.5;max-width:640px;text-wrap:pretty">A 3D block puzzle that teaches rotation and reflection to K–2 students. In v2 the teacher operates it on an iPad held in landscape and mirrored to a classroom screen. The game page is built to this spec; rows marked <span class="tag tag-accent">v2</span> are what changed from v1. Sizes are CSS px at a scale of 1.</p>
+  </div>
+
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:28px">0. Decisions from the interview</h2>
+    <table class="table" style="font-size:15px">
+      <thead><tr><th>Question</th><th>Decision</th><th>What it changes</th></tr></thead>
+      <tbody>
+        <tr><td>Who plays</td><td>The teacher, demonstrating to the class</td><td>One operator, many watchers. The game is a teaching aid first.</td></tr>
+        <tr><td>Device</td><td>iPad, landscape, mirrored to a screen</td><td>Touch only. No hover, no mouse, one hand often holding the tablet.</td></tr>
+        <tr><td>Goal</td><td>Polish the existing five levels</td><td>No new levels or puzzles in v2.</td></tr>
+        <tr><td>Touch problems</td><td>Wants to drag blocks; taps miss or misfire; no placement preview in level 5</td><td>Section 5, Touch and gestures.</td></tr>
+        <tr><td>Gestures</td><td>Gestures and buttons both work</td><td>Buttons stay so the teacher can point at a move while naming it.</td></tr>
+        <tr><td>Scoring</td><td>Keep, but optional</td><td>A Score switch hides moves and stars. Section 6.</td></tr>
+        <tr><td>Language</td><td>Korean, formal math terms throughout</td><td>All text translated; the mathLabels tweak is removed. Section 7.</td></tr>
+        <tr><td>Big-screen legibility</td><td>Fine as it is</td><td>Layout sizes and animation speeds stay at v1 values.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:28px">1. Screen structure</h2>
+    <div style="display:flex;flex-direction:column;gap:8px;max-width:640px;font-size:14px">
+      <div style="display:flex;gap:8px;align-items:center;padding:12px 14px;background:var(--color-surface)"><strong style="margin-right:auto">A · Header</strong><span>logo · level tabs ×5 · score · sound</span></div>
+      <div style="display:flex;gap:8px">
+        <div style="flex:1;padding:12px 14px;background:var(--color-surface)"><strong>B · Prompt</strong><br>kicker, title, instruction</div>
+        <div style="width:120px;padding:12px 14px;background:var(--color-accent-100)"><strong>C · Moves</strong><br>hidden when Score is off</div>
+      </div>
+      <div style="display:flex;gap:8px;height:150px">
+        <div style="flex:1;padding:12px 14px;background:var(--color-neutral-200)"><strong>D · Stage</strong> (3D table)<br>left: piece bench · right: board/target<br>takes drag, turn and flip gestures</div>
+      </div>
+      <div style="padding:12px 14px;background:var(--color-surface)"><strong>E · Controls</strong> · move buttons, or answer choices in level 3</div>
+      <div style="padding:12px 14px;background:var(--color-surface)"><strong>F · Utility row</strong> · Undo · Hint · status</div>
+      <div style="padding:12px 14px;border:2px dashed var(--color-neutral-400)"><strong>G · Result dialog</strong> (overlay, appears when a level is solved)</div>
+    </div>
+    <table class="table" style="font-size:15px">
+      <thead><tr><th>Region</th><th>Spec</th></tr></thead>
+      <tbody>
+        <tr><td>Page</td><td>max-width 980, padding 24 / 28 / 56, column gap 28, left-aligned</td></tr>
+        <tr><td>A Header</td><td>Wordmark 24 serif 600. Level tabs min 76×60 (number 18, name 12, stars 11); active tab is filled with the accent color. Sound toggle 76×60. <span class="tag tag-accent">v2</span> Score toggle 76×60 to the left of Sound. Tab stars are hidden when Score is off.</td></tr>
+        <tr><td>B Prompt</td><td>Kicker 12 caps in accent-700, H1 46 / 1.05, instruction 21 / 1.4, max-width 640. <span class="tag tag-accent">v2</span> Korean text: line-height 1.5 for the instruction, word-break keep-all, no letter-spacing on Hangul.</td></tr>
+        <tr><td>C Moves</td><td>Label 12 caps, number 88 heading serif 600 with tabular figures. Sits bottom-aligned to the right of B and wraps below it on narrow screens. <span class="tag tag-accent">v2</span> Removed from the layout when Score is off.</td></tr>
+        <tr><td>D Stage</td><td>Fixed 660×380 artboard, scaled to fit the container width (max-width 800, max scale 1.2×). <span class="tag tag-accent">v2</span> touch-action none, so dragging on the stage never scrolls or zooms the page.</td></tr>
+        <tr><td>E Controls</td><td>Move buttons 112×96 (glyph 38, word 16, sub-label 12), gap 12; widened from 96 so the Korean sub-labels fit on one line. Answer tiles 136×136 (level 3). <span class="tag tag-accent">v2</span> A button flashes accent-200 for 300 ms when its move is made by gesture.</td></tr>
+        <tr><td>F Utility</td><td>Undo and Hint buttons 56 high. Status text 18 (blocks placed, level 5 only).</td></tr>
+        <tr><td>G Result</td><td>Overlay over a 45% neutral-900 scrim. Card max-width 540, padding 36. Stars 60, move log as 40×40 chips, explanation 19, buttons 56 high. <span class="tag tag-accent">v2</span> Stars and move count are hidden when Score is off; the move log and explanation stay.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:28px">2. Stage (3D)</h2>
+    <table class="table" style="font-size:15px">
+      <tbody>
+        <tr><td>Camera</td><td>Perspective 1300, origin 50% 10%. The table plane (640×320) is tilted rotateX 50°.</td></tr>
+        <tr><td>Cube</td><td>56 px. Six CSS faces: top is the 400 ramp step, front 500, sides and back 600, underside the other accent. Each face has an inner highlight and a 1 px edge.</td></tr>
+        <tr><td>Bench</td><td>Disc 260 ⌀ centered at x 160 (x 320 in level 3). The piece is centered on it. <span class="tag tag-accent">v2</span> The disc is a turntable: dragging its rim turns the piece.</td></tr>
+        <tr><td>Board plate</td><td>248×248 at (356, 36) in neutral-300. Level 1–2 holes are 52 squares in neutral-700. Level 5 board is a 4×4 grid at (368, 48).</td></tr>
+        <tr><td>Mirror board</td><td>8×5 grid at (96, 20). The left half is fixed. The mirror line is a 6 px magenta stripe at x 320 with a translucent 84 px standing pane.</td></tr>
+        <tr><td>Placement ghost</td><td><span class="tag tag-accent">v2</span> Shown in level 5 while a piece is dragged over the board, and after a first tap on a board cell. A valid spot is accent at 45%; an invalid one is accent-2 at 45%. (v1 showed it on mouse hover only.)</td></tr>
+        <tr><td>Dragged piece</td><td><span class="tag tag-accent">v2</span> Lifts 40 px off the table and sits 40 px above the finger on screen, so the hand does not cover it. Shadow grows to shadow-lg while lifted.</td></tr>
+        <tr><td>Hint marker</td><td>5 px accent-2 outline on a target cell, or a ring around the suggested button.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:28px">3. Levels</h2>
+    <p style="margin:0;font-size:15px;max-width:640px">Content is unchanged from v1. Korean names are in section 7.</p>
+    <table class="table" style="font-size:15px">
+      <thead><tr><th>#</th><th>Name</th><th>Type</th><th>Content</th><th>Buttons</th><th>Gestures (v2)</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Turn it</td><td>Match</td><td>L-tetromino into a hole rotated 180°</td><td>↻ ↺</td><td>Turn, drag into the hole</td></tr>
+        <tr><td>2</td><td>Flip it</td><td>Match</td><td>P-pentomino into an anti-diagonal reflection</td><td>↻ ↺ ↔ ↕ ⤡</td><td>Turn, flip, drag into the hole</td></tr>
+        <tr><td>3</td><td>Guess</td><td>Predict</td><td>4 questions: ¼ right, flip ↔, half turn, flip ⤡. Three choices each.</td><td>Pick</td><td>None. The piece is locked so the answer is not given away.</td></tr>
+        <tr><td>4</td><td>Mirror</td><td>Mirror</td><td>Tap 8 cells to complete a mirrored tree</td><td>Tap</td><td>Tap; drag across cells to paint several</td></tr>
+        <tr><td>5</td><td>Fill</td><td>Fill</td><td>Tile a 4×4 board with 4 L pieces</td><td>↻ ↺ ↔ ↕ + place</td><td>Turn, flip, drag to place</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:28px">4. Behavior</h2>
+    <table class="table" style="font-size:15px">
+      <tbody>
+        <tr><td>Turn animation</td><td>380 ms ease-in-out, spinning flat with a 16 px lift</td></tr>
+        <tr><td>Flip animation</td><td>600 ms, lifting 110 px and turning over</td></tr>
+        <tr><td>Solve (match)</td><td><span class="tag tag-accent">v2</span> When the piece matches the hole, the hole's edge pulses in accent and the piece waits 2 s. If the teacher drags the piece onto the hole in that time, it drops in under the finger. If not, it arcs into the hole by itself over 800 ms as in v1. Touching the piece stops the countdown; letting go away from the hole restarts it. Either way the result dialog opens once the piece has landed, and neither way adds a move.</td></tr>
+        <tr><td>Color meaning</td><td>Cyan side up means turned only. Magenta side up means flipped an odd number of times.</td></tr>
+        <tr><td>Move count</td><td>+1 per turn, flip, tap, placement or answer. Undo restores the count. <span class="tag tag-accent">v2</span> A gesture counts exactly like its button. A drag that springs back counts nothing.</td></tr>
+        <tr><td>Stars</td><td>3 stars at the minimum move count (+2 allowed in level 5), 2 stars within 4 extra moves, otherwise 1. Using a hint caps the score at 2. The best score per level is saved.</td></tr>
+        <tr><td>Hint</td><td>Levels 1, 2 and 5: rings the next move. Level 3: removes one wrong choice. Level 4: marks one cell to fix. <span class="tag tag-accent">v2</span> Level 5 accepts any valid tiling: the hint is worked out from the pieces already on the board, and rings Undo only when the board can no longer be completed. (v1 knew one solution and rejected the others.)</td></tr>
+        <tr><td>Sound</td><td>Synthesized tones for turn, flip, place, wrong and solve. There is a toggle in the header.</td></tr>
+        <tr><td>Saving</td><td>Current level and best stars are stored in the browser (localStorage key turnflip.v1). <span class="tag tag-accent">v2</span> The Score and Sound switches are saved there too.</td></tr>
+        <tr><td>Math language</td><td><span class="tag tag-accent">v2</span> Formal terms everywhere, during play and in the result dialog. (v1 used none during play.)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:28px">5. Touch and gestures <span class="tag tag-accent">v2</span></h2>
+    <p style="margin:0;font-size:15px;max-width:640px">Every gesture has a button that does the same thing. Gestures are worked out from one finger wherever possible, because the other hand is holding the iPad.</p>
+    <table class="table" style="font-size:15px">
+      <thead><tr><th>Gesture</th><th>Where</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td>Turn: drag the rim</td><td>On the bench disc, outside the piece (levels 1, 2, 5)</td><td>The piece follows the finger around the disc. On release it settles to the nearest quarter turn. Each quarter turn passed is one move, logged as ↻ or ↺. Released under 45° from the start, it settles back and counts nothing.</td></tr>
+        <tr><td>Turn: two-finger twist</td><td>On the piece</td><td>Same as dragging the rim.</td></tr>
+        <tr><td>Flip: flick</td><td>On the piece (levels 2, 5)</td><td>A quick stroke across the piece: at least 40 px in under 250 ms. Sideways flicks ↔, up or down flicks ↕, a slanted flick flips ⤡ (level 2 only). The stroke direction is read in 45° sectors.</td></tr>
+        <tr><td>Place: drag</td><td>From the piece onto the board (level 5)</td><td>A touch that stays down past 250 ms, or moves slower than a flick, picks the piece up. The ghost follows, snapped to the grid. Release on a valid spot places it. Release anywhere else and it springs back to the bench in 250 ms with the wrong tone.</td></tr>
+        <tr><td>Try the hole: drag</td><td>From the piece onto the hole (levels 1, 2)</td><td>The piece can be picked up at any time, with the same pick-up rule as placing. Released over the hole when it matches, it drops in and the level is solved. Released over the hole when it does not match, it rests on top for 400 ms so the class can see the mismatch, then springs back to the bench with the wrong tone. No move is counted.</td></tr>
+        <tr><td>Place: tap, tap</td><td>On a board cell (level 5)</td><td>The first tap shows the ghost there. A second tap on the ghost places it. Tapping another cell moves the ghost.</td></tr>
+        <tr><td>Paint</td><td>Right half of the mirror board (level 4)</td><td>Tap toggles one cell. Dragging across cells sets each one to the state the first cell changed to. Each cell changed is one move.</td></tr>
+      </tbody>
+    </table>
+    <h3 style="margin:8px 0 0;font-size:21px">Making taps land</h3>
+    <table class="table" style="font-size:15px">
+      <tbody>
+        <tr><td>Cause in v1</td><td>The board is tilted 50°, so a 56 px cell is drawn about 67 wide and 40 tall at iPad scale, under the 44 px a finger needs. Taps during a turn or flip animation were thrown away, which reads as a missed tap.</td></tr>
+        <tr><td>Hit testing</td><td>The touch point is projected onto the table plane and snapped to the nearest cell, instead of relying on which element is under the finger. A touch up to half a cell outside the board edge still counts for the edge cell.</td></tr>
+        <tr><td>Cubes in the way</td><td>A touch on any visible face of a standing cube belongs to that cube's cell, not the cell drawn behind it.</td></tr>
+        <tr><td>Input during animation</td><td>One input is held and played when the animation ends. Further inputs replace the held one.</td></tr>
+        <tr><td>Tap tolerance</td><td>A touch is a tap if it lifts within 10 px of where it landed. The action fires on lift.</td></tr>
+        <tr><td>Stray touches</td><td>While one finger is dragging, other touches on the stage are ignored (except the second finger of a twist). Double-tap zoom and long-press callouts are switched off on the game page.</td></tr>
+        <tr><td>Feedback</td><td>Every accepted touch gives a tone and a visible change within 100 ms.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:28px">6. Score switch <span class="tag tag-accent">v2</span></h2>
+    <table class="table" style="font-size:15px">
+      <thead><tr><th></th><th>Score on (default)</th><th>Score off</th></tr></thead>
+      <tbody>
+        <tr><td>Moves counter (C)</td><td>Shown</td><td>Hidden</td></tr>
+        <tr><td>Stars on level tabs</td><td>Shown</td><td>Hidden</td></tr>
+        <tr><td>Result dialog</td><td>Stars, move count, move log, explanation</td><td>Move log and explanation only</td></tr>
+        <tr><td>Hint</td><td>Caps the level at 2 stars</td><td>Free</td></tr>
+        <tr><td>Best stars</td><td>Updated</td><td>Not updated; earlier results are kept</td></tr>
+        <tr><td>Undo, sound, gestures</td><td colspan="2">The same either way</td></tr>
+      </tbody>
+    </table>
+    <p style="margin:0;font-size:15px;max-width:640px">The switch sits in the header so the teacher can change it mid-lesson without leaving the game. Moves are still counted while it is off, so switching it back on shows the right number.</p>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:28px">7. Korean text <span class="tag tag-accent">v2</span></h2>
+    <p style="margin:0;font-size:15px;max-width:640px">Accepted wording. Formal terms are used from the first level: 회전 for a turn, 대칭 for a flip, 대칭축 for the mirror line.</p>
+    <table class="table" style="font-size:15px">
+      <thead><tr><th>Where</th><th>v1 English</th><th>v2 Korean</th></tr></thead>
+      <tbody>
+        <tr><td>Level 1</td><td>Turn it · Turn the block until it fits the hole.</td><td>회전 · 도형을 회전하여 구멍에 맞춰 보세요.</td></tr>
+        <tr><td>Level 2</td><td>Flip it · Turn it, flip it, and make it fit the hole.</td><td>대칭 · 도형을 회전하고 대칭시켜 구멍에 맞춰 보세요.</td></tr>
+        <tr><td>Level 3</td><td>Guess · What will it look like after the move?</td><td>예측 · 이동한 뒤의 도형은 어떤 모양일까요?</td></tr>
+        <tr><td>Level 4</td><td>Mirror · Tap the squares to build the other half in the mirror.</td><td>선대칭 · 대칭축을 기준으로 선대칭이 되도록 칸을 채워 보세요.</td></tr>
+        <tr><td>Level 5</td><td>Fill · Turn and flip each block, then put it in. Fill every square.</td><td>채우기 · 도형을 회전하고 대칭시켜 판에 놓아 보세요. 모든 칸을 채웁니다.</td></tr>
+        <tr><td>↻ button</td><td>Turn · ¼ right</td><td>회전 · 시계 방향 90°</td></tr>
+        <tr><td>↺ button</td><td>Turn · ¼ left</td><td>회전 · 반시계 방향 90°</td></tr>
+        <tr><td>Half turn (level 3)</td><td>Half turn</td><td>회전 · 180°</td></tr>
+        <tr><td>↔ button</td><td>Flip</td><td>대칭 · 세로 대칭축</td></tr>
+        <tr><td>↕ button</td><td>Flip</td><td>대칭 · 가로 대칭축</td></tr>
+        <tr><td>⤡ button</td><td>Flip</td><td>대칭 · 대각선 대칭축</td></tr>
+        <tr><td>Kicker</td><td>Level 1 of 5</td><td>1단계 / 5단계</td></tr>
+        <tr><td>Counter</td><td>Moves</td><td>이동 횟수</td></tr>
+        <tr><td>Utility</td><td>Undo · Hint · Blocks placed 2 of 4</td><td>되돌리기 · 힌트 · 놓은 도형 2 / 4</td></tr>
+        <tr><td>Header</td><td>Sound on / off</td><td>소리 켬 / 끔 · 점수 켬 / 끔</td></tr>
+        <tr><td>Level 3</td><td>Question 1 of 4 · Do this · Pick one</td><td>문제 1 / 4 · 이 이동을 하면 · 하나를 고르세요</td></tr>
+        <tr><td>Result</td><td>Level 1 solved · 3 moves · What happened</td><td>1단계 완료 · 이동 3번 · 이동 정리</td></tr>
+        <tr><td>Result buttons</td><td>Next level · Play again · Back to level 1</td><td>다음 단계 · 다시 하기 · 1단계로</td></tr>
+        <tr><td>Explanation, turn</td><td>A turn spins a shape around its middle. It is still the same shape, just facing a new way.</td><td>회전은 도형을 한 점을 중심으로 돌리는 이동입니다. 모양과 크기는 그대로이고 방향만 바뀝니다.</td></tr>
+        <tr><td>Explanation, flip</td><td>A flip makes a mirror image. The block is the same size, but it faces the other way.</td><td>대칭은 대칭축을 기준으로 도형을 뒤집는 이동입니다. 모양과 크기는 그대로이고 좌우 또는 위아래가 바뀝니다.</td></tr>
+        <tr><td>Explanation, mirror</td><td>Each block on your side is just as far from the mirror line as its partner.</td><td>선대칭에서는 서로 짝이 되는 두 칸이 대칭축에서 같은 거리에 있습니다. 대칭축을 따라 접으면 완전히 겹칩니다.</td></tr>
+        <tr><td>Net result</td><td>All together, your moves made a half turn (180°).</td><td>지금까지의 이동을 합치면 180° 회전과 같습니다.</td></tr>
+      </tbody>
+    </table>
+    <p style="margin:0;font-size:15px;max-width:640px">Typeface: the design system's Source Serif 4 has no Hangul. Korean text is set in Noto Serif KR at the same sizes and weights, with Source Serif 4 kept for numerals and the wordmark.</p>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:28px">8. Tweaks</h2>
+    <table class="table" style="font-size:15px">
+      <tbody>
+        <tr><td>twoTone</td><td>On by default. Shows the magenta underside so flipped blocks are visible.</td></tr>
+        <tr><td>scoring</td><td><span class="tag tag-accent">v2</span> On by default. Sets the starting position of the header Score switch.</td></tr>
+        <tr><td>sound</td><td>On by default</td></tr>
+        <tr><td>mathLabels</td><td><span class="tag tag-accent">v2</span> Removed. Degrees and 대칭축 labels are always shown.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:20px">
+    <h2 style="margin:0;font-size:28px">9. Still open</h2>
+    <table class="table" style="font-size:15px">
+      <thead><tr><th>Question</th><th>Default if not answered</th></tr></thead>
+      <tbody>
+        <tr><td>Settled: tried on the iPad on 15 November 2026 and judged decent. No specific misfires reported.</td><td>Adjust gestures only if a problem comes up in class.</td></tr>
+        <tr><td>Flick-to-flip and drag-to-place both start on the piece. Do they get confused in real use on the iPad?</td><td>Ship the 250 ms rule in section 5 and adjust after a classroom trial.</td></tr>
+        <tr><td>The screen is slightly taller than the iPad in landscape, so it scrolls a little. Accepted for now.</td><td>Leave the sizes alone. Because the stage no longer scrolls under a finger, the page scrolls from the areas outside the stage.</td></tr>
+        <tr><td>Is the Korean wording right for these students, in particular 대칭 for every flip and 선대칭 for level 4?</td><td>Settled: the wording in section 7 is accepted.</td></tr>
+        <tr><td>Does the wordmark stay "Turn &amp; Flip" or get a Korean name?</td><td>Keep "Turn &amp; Flip".</td></tr>
+      </tbody>
+    </table>
+  </section>
+</div>
+</x-dc>
+</body>
+</html>
