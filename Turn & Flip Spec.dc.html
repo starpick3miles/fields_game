@@ -17,7 +17,7 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
 </helmet>
 <div style="max-width:920px;padding:48px 32px 96px;display:flex;flex-direction:column;gap:56px">
   <div style="display:flex;flex-direction:column;gap:10px">
-    <div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-accent-700)">Spec · Turn &amp; Flip · v2 (built, tried on the iPad)</div>
+    <div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-accent-700)">Spec · Turn &amp; Flip · v2.1 (built; v2 tried on the iPad, v2.1 checked by scripted play)</div>
     <h1 style="margin:0;font-size:46px;line-height:1.05;letter-spacing:-0.015em">Turn &amp; Flip: teacher demo on iPad</h1>
     <p style="margin:0;font-size:19px;line-height:1.5;max-width:640px;text-wrap:pretty">A 3D block puzzle that teaches rotation and reflection to K–2 students. In v2 the teacher operates it on an iPad held in landscape and mirrored to a classroom screen. The game page is built to this spec; rows marked <span class="tag tag-accent">v2</span> are what changed from v1. Sizes are CSS px at a scale of 1.</p>
   </div>
@@ -50,19 +50,19 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
       <div style="display:flex;gap:8px;height:150px">
         <div style="flex:1;padding:12px 14px;background:var(--color-neutral-200)"><strong>D · Stage</strong> (3D table)<br>left: piece bench · right: board/target<br>takes drag, turn and flip gestures</div>
       </div>
-      <div style="padding:12px 14px;background:var(--color-surface)"><strong>E · Controls</strong> · move buttons, or answer choices in level 3</div>
-      <div style="padding:12px 14px;background:var(--color-surface)"><strong>F · Utility row</strong> · Undo · Hint · status</div>
+      <div style="padding:12px 14px;background:var(--color-surface)"><strong>E · Controls</strong> · move buttons, or answer choices in level 3 · to the right of the stage since v2.1</div>
+      <div style="padding:12px 14px;background:var(--color-surface)"><strong>F · Utility row</strong> · Undo · Hint · status · under the controls</div>
       <div style="padding:12px 14px;border:2px dashed var(--color-neutral-400)"><strong>G · Result dialog</strong> (overlay, appears when a level is solved)</div>
     </div>
     <table class="table" style="font-size:15px">
       <thead><tr><th>Region</th><th>Spec</th></tr></thead>
       <tbody>
-        <tr><td>Page</td><td>max-width 980, padding 24 / 28 / 56, column gap 28, left-aligned</td></tr>
+        <tr><td>Page</td><td>max-width 980, left-aligned. <span class="tag tag-accent">v2.1</span> Padding 20 / 28 / 16, column gap 20, so the whole game fits an iPad in landscape without scrolling.</td></tr>
         <tr><td>A Header</td><td>Wordmark 24 serif 600. Level tabs min 76×60 (number 18, name 12, stars 11); active tab is filled with the accent color. Sound toggle 76×60. <span class="tag tag-accent">v2</span> Score toggle 76×60 to the left of Sound. Tab stars are hidden when Score is off.</td></tr>
         <tr><td>B Prompt</td><td>Kicker 12 caps in accent-700, H1 46 / 1.05, instruction 21 / 1.4, max-width 640. <span class="tag tag-accent">v2</span> Korean text: line-height 1.5 for the instruction, word-break keep-all, no letter-spacing on Hangul.</td></tr>
         <tr><td>C Moves</td><td>Label 12 caps, number 88 heading serif 600 with tabular figures. Sits bottom-aligned to the right of B and wraps below it on narrow screens. <span class="tag tag-accent">v2</span> Removed from the layout when Score is off.</td></tr>
-        <tr><td>D Stage</td><td>Fixed 660×380 artboard, scaled to fit the container width (max-width 800, max scale 1.2×). <span class="tag tag-accent">v2</span> touch-action none, so dragging on the stage never scrolls or zooms the page.</td></tr>
-        <tr><td>E Controls</td><td>Move buttons 112×96 (glyph 38, word 16, sub-label 12), gap 12; widened from 96 so the Korean sub-labels fit on one line. Answer tiles 136×136 (level 3). <span class="tag tag-accent">v2</span> A button flashes accent-200 for 300 ms when its move is made by gesture.</td></tr>
+        <tr><td>D Stage</td><td>Fixed 660×380 artboard, scaled to fit the container width (max-width 800, max scale 1.2×). <span class="tag tag-accent">v2.1</span> The scale also shrinks, down to 0.8×, so the stage never pushes the page past the bottom of the screen. <span class="tag tag-accent">v2</span> touch-action none, so dragging on the stage never scrolls or zooms the page.</td></tr>
+        <tr><td>E Controls</td><td>Move buttons 112×96 (glyph 38, word 16, sub-label 12), gap 12; widened from 96 so the Korean sub-labels fit on one line. Answer tiles 100×100 (level 3). <span class="tag tag-accent">v2.1</span> Controls and the utility row sit in a 236-wide column to the right of the stage, buttons two per row. Below 820 wide the column drops under the stage. <span class="tag tag-accent">v2</span> A button flashes accent-200 for 300 ms when its move is made by gesture.</td></tr>
         <tr><td>F Utility</td><td>Undo and Hint buttons 56 high. Status text 18 (blocks placed, level 5 only).</td></tr>
         <tr><td>G Result</td><td>Overlay over a 45% neutral-900 scrim. Card max-width 540, padding 36. Stars 60, move log as 40×40 chips, explanation 19, buttons 56 high. <span class="tag tag-accent">v2</span> Stars and move count are hidden when Score is off; the move log and explanation stay.</td></tr>
       </tbody>
@@ -87,15 +87,15 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
 
   <section style="display:flex;flex-direction:column;gap:20px">
     <h2 style="margin:0;font-size:28px">3. Levels</h2>
-    <p style="margin:0;font-size:15px;max-width:640px">Content is unchanged from v1. Korean names are in section 7.</p>
+    <p style="margin:0;font-size:15px;max-width:640px">Korean names are in section 7. <span class="tag tag-accent">v2.1</span> Levels 1, 2, 4 and 5 now hold several puzzles each; the result dialog offers 다음 문제 until the last one, then 다음 단계.</p>
     <table class="table" style="font-size:15px">
       <thead><tr><th>#</th><th>Name</th><th>Type</th><th>Content</th><th>Buttons</th><th>Gestures (v2)</th></tr></thead>
       <tbody>
-        <tr><td>1</td><td>Turn it</td><td>Match</td><td>L-tetromino into a hole rotated 180°</td><td>↻ ↺</td><td>Turn, drag into the hole</td></tr>
-        <tr><td>2</td><td>Flip it</td><td>Match</td><td>P-pentomino into an anti-diagonal reflection</td><td>↻ ↺ ↔ ↕ ⤡</td><td>Turn, flip, drag into the hole</td></tr>
+        <tr><td>1</td><td>Turn it</td><td>Match</td><td>3 puzzles: L-tetromino turned 180°, P-pentomino a quarter turn left, F-pentomino turned 180°</td><td>↻ ↺</td><td>Turn, drag into the hole</td></tr>
+        <tr><td>2</td><td>Flip it</td><td>Match</td><td>3 puzzles: P-pentomino diagonal reflection, L-tetromino left–right reflection, F-pentomino reflected then turned</td><td>↻ ↺ ↔ ↕ ⤡</td><td>Turn, flip, drag into the hole</td></tr>
         <tr><td>3</td><td>Guess</td><td>Predict</td><td>4 questions: ¼ right, flip ↔, half turn, flip ⤡. Three choices each.</td><td>Pick</td><td>None. The piece is locked so the answer is not given away.</td></tr>
-        <tr><td>4</td><td>Mirror</td><td>Mirror</td><td>Tap 8 cells to complete a mirrored tree</td><td>Tap</td><td>Tap; drag across cells to paint several</td></tr>
-        <tr><td>5</td><td>Fill</td><td>Fill</td><td>Tile a 4×4 board with 4 L pieces</td><td>↻ ↺ ↔ ↕ + place</td><td>Turn, flip, drag to place</td></tr>
+        <tr><td>4</td><td>Mirror</td><td>Mirror</td><td>3 puzzles: a tree (8 cells), a staircase (10), a scattered pattern that does not touch the 대칭축 everywhere (8)</td><td>Tap</td><td>Tap; drag across cells to paint several</td></tr>
+        <tr><td>5</td><td>Fill</td><td>Fill</td><td>2 puzzles: four L pieces with turns and flips, then four T pieces with turns only</td><td>↻ ↺ ↔ ↕ + place</td><td>Turn, flip, drag to place</td></tr>
       </tbody>
     </table>
   </section>
@@ -109,10 +109,10 @@ a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
         <tr><td>Solve (match)</td><td><span class="tag tag-accent">v2</span> When the piece matches the hole, the hole's edge pulses in accent and the piece waits 2 s. If the teacher drags the piece onto the hole in that time, it drops in under the finger. If not, it arcs into the hole by itself over 800 ms as in v1. Touching the piece stops the countdown; letting go away from the hole restarts it. Either way the result dialog opens once the piece has landed, and neither way adds a move.</td></tr>
         <tr><td>Color meaning</td><td>Cyan side up means turned only. Magenta side up means flipped an odd number of times.</td></tr>
         <tr><td>Move count</td><td>+1 per turn, flip, tap, placement or answer. Undo restores the count. <span class="tag tag-accent">v2</span> A gesture counts exactly like its button. A drag that springs back counts nothing.</td></tr>
-        <tr><td>Stars</td><td>3 stars at the minimum move count (+2 allowed in level 5), 2 stars within 4 extra moves, otherwise 1. Using a hint caps the score at 2. The best score per level is saved.</td></tr>
+        <tr><td>Stars</td><td>3 stars at the minimum move count (+2 allowed in level 5), 2 stars within 4 extra moves, otherwise 1. Using a hint caps the score at 2. The best score is saved. <span class="tag tag-accent">v2.1</span> It is kept per puzzle, and a level tab shows the lowest of its puzzles, so three stars on the tab means three stars on every puzzle.</td></tr>
         <tr><td>Hint</td><td>Levels 1, 2 and 5: rings the next move. Level 3: removes one wrong choice. Level 4: marks one cell to fix. <span class="tag tag-accent">v2</span> Level 5 accepts any valid tiling: the hint is worked out from the pieces already on the board, and rings Undo only when the board can no longer be completed. (v1 knew one solution and rejected the others.)</td></tr>
         <tr><td>Sound</td><td>Synthesized tones for turn, flip, place, wrong and solve. There is a toggle in the header.</td></tr>
-        <tr><td>Saving</td><td>Current level and best stars are stored in the browser (localStorage key turnflip.v1). <span class="tag tag-accent">v2</span> The Score and Sound switches are saved there too.</td></tr>
+        <tr><td>Saving</td><td>Current level, current puzzle and best stars are stored in the browser (localStorage key turnflip.v1). <span class="tag tag-accent">v2</span> The Score and Sound switches are saved there too.</td></tr>
         <tr><td>Math language</td><td><span class="tag tag-accent">v2</span> Formal terms everywhere, during play and in the result dialog. (v1 used none during play.)</td></tr>
       </tbody>
     </table>
