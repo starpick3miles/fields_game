@@ -21,9 +21,11 @@ button{font-family:var(--font-body),'Noto Serif KR',serif}
 .tf-hole{outline:4px solid transparent}
 .tf-ready{animation:tfPulse 1s ease-in-out infinite}
 @media (prefers-reduced-motion: reduce){.tf-ready{animation:none;outline-color:var(--color-accent)}}
+.tf-side{flex:0 0 236px;display:flex;flex-direction:column;gap:12px}
+@media (max-width:820px){.tf-side{flex:1 1 100%}}
 </style>
 </helmet>
-<div style="max-width:980px;padding:24px 28px 56px;display:flex;flex-direction:column;gap:28px;user-select:none;-webkit-user-select:none;touch-action:manipulation">
+<div style="max-width:980px;padding:20px 28px 16px;display:flex;flex-direction:column;gap:20px;user-select:none;-webkit-user-select:none;touch-action:manipulation">
   <header style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
     <div style="font-family:var(--font-heading);font-weight:600;font-size:24px;letter-spacing:-0.015em;margin-right:auto">Turn &amp; Flip</div>
     <nav style="display:flex;gap:8px;flex-wrap:wrap">
@@ -53,7 +55,8 @@ button{font-family:var(--font-body),'Noto Serif KR',serif}
     </sc-if>
   </div>
 
-  <div ref="{{ wrapRef }}" style="width:100%;max-width:800px;height:{{ stageH }}px;position:relative;touch-action:none">
+  <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
+  <div ref="{{ wrapRef }}" style="flex:1 1 480px;min-width:0;max-width:800px;height:{{ stageH }}px;position:relative;touch-action:none">
     <div style="position:absolute;left:0;top:0;width:660px;height:380px;transform-origin:0 0;transform:scale({{ scale }});perspective:1300px;perspective-origin:50% 10%">
       <div ref="{{ planeRef }}" style="position:absolute;left:10px;top:20px;width:640px;height:320px;transform:rotateX(50deg);transform-style:preserve-3d">
         <div class="tf-m" style="position:absolute;left:0;top:0;width:1px;height:1px;pointer-events:none"></div>
@@ -110,11 +113,12 @@ button{font-family:var(--font-body),'Noto Serif KR',serif}
     </div>
   </div>
 
+  <div class="tf-side">
   <sc-if value="{{ isPredict }}" hint-placeholder-val="{{ false }}">
-    <div style="display:flex;flex-wrap:wrap;gap:36px;align-items:flex-start">
+    <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start">
       <div style="display:flex;flex-direction:column;gap:10px">
         <div style="font-size:13px;color:var(--color-accent-700)">{{ qLabel }}</div>
-        <div style="display:flex;align-items:center;gap:14px;padding:16px 22px;background:var(--color-surface);border-radius:2px;min-height:100px;box-sizing:border-box">
+        <div style="display:flex;align-items:center;gap:14px;padding:12px 18px;background:var(--color-surface);border-radius:2px;min-height:76px;box-sizing:border-box">
           <span aria-hidden="true" style="font-size:44px;line-height:1;color:{{ qOp.color }}">{{ qOp.glyph }}</span>
           <span style="display:flex;flex-direction:column;gap:2px">
             <span style="font-size:24px;font-weight:600">{{ qOp.word }}</span>
@@ -124,9 +128,9 @@ button{font-family:var(--font-body),'Noto Serif KR',serif}
       </div>
       <div style="display:flex;flex-direction:column;gap:10px">
         <div style="font-size:13px;color:var(--color-accent-700)">하나를 고르세요</div>
-        <div style="display:flex;gap:14px;flex-wrap:wrap">
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
           <sc-for list="{{ options }}" as="op" hint-placeholder-count="3">
-            <button onClick="{{ op.onClick }}" aria-label="{{ op.label }}" style="width:136px;height:136px;display:grid;place-items:center;background:var(--color-surface);border:4px solid {{ op.ring }};opacity:{{ op.opacity }};cursor:pointer;border-radius:2px;padding:0" style-hover="background:var(--color-accent-100)" style-active="background:var(--color-accent-200)">
+            <button onClick="{{ op.onClick }}" aria-label="{{ op.label }}" style="width:100px;height:100px;display:grid;place-items:center;background:var(--color-surface);border:4px solid {{ op.ring }};opacity:{{ op.opacity }};cursor:pointer;border-radius:2px;padding:0" style-hover="background:var(--color-accent-100)" style-active="background:var(--color-accent-200)">
               <div style="position:relative;width:{{ op.w }}px;height:{{ op.h }}px">
                 <sc-for list="{{ op.cells }}" as="m">
                   <div style="position:absolute;left:{{ m.left }}px;top:{{ m.top }}px;width:24px;height:24px;background:var(--color-neutral-800)"></div>
@@ -153,12 +157,14 @@ button{font-family:var(--font-body),'Noto Serif KR',serif}
 
   <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
     <sc-if value="{{ showUndo }}" hint-placeholder-val="{{ true }}">
-      <button onClick="{{ undo }}" style="min-height:56px;min-width:96px;padding:8px 16px;border:3px solid {{ undoRing }};background:transparent;border-radius:2px;cursor:pointer;font-size:17px;color:var(--color-text);display:flex;align-items:center;gap:8px" style-hover="background:var(--color-neutral-200)"><span aria-hidden="true" style="font-size:22px">↶</span> 되돌리기</button>
+      <button onClick="{{ undo }}" style="min-height:56px;min-width:96px;padding:8px 12px;border:3px solid {{ undoRing }};background:transparent;border-radius:2px;cursor:pointer;font-size:17px;color:var(--color-text);display:flex;align-items:center;gap:8px" style-hover="background:var(--color-neutral-200)"><span aria-hidden="true" style="font-size:22px">↶</span> 되돌리기</button>
     </sc-if>
     <button onClick="{{ hint }}" style="min-height:56px;min-width:96px;padding:8px 16px;border:3px solid transparent;background:transparent;border-radius:2px;cursor:pointer;font-size:17px;color:var(--color-accent-700);display:flex;align-items:center;gap:8px" style-hover="background:var(--color-accent-100)"><span aria-hidden="true" style="font-size:20px">?</span> 힌트</button>
-    <div style="display:flex;gap:24px;margin-left:12px;font-size:18px;flex-wrap:wrap">
+    <div style="display:flex;gap:24px;font-size:18px;flex-wrap:wrap">
       <span>{{ extraInfo }}</span>
     </div>
+  </div>
+  </div>
   </div>
 
   <sc-if value="{{ won }}" hint-placeholder-val="{{ false }}">
@@ -262,19 +268,40 @@ const solveH = (src, dst) => {
 
 const L4 = [[0,0],[0,1],[0,2],[1,2]];
 const P5 = [[0,0],[1,0],[0,1],[1,1],[0,2]];
+const T4 = [[0,0],[1,0],[2,0],[1,1]];
+const F5 = [[1,0],[2,0],[0,1],[1,1],[1,2]];
 const TREE = [[3,0],[2,1],[3,1],[1,2],[2,2],[3,2],[3,3],[3,4]];
+const STEPS = [[3,1],[2,2],[3,2],[1,3],[2,3],[3,3],[0,4],[1,4],[2,4],[3,4]];
+const DOTS = [[0,0],[1,0],[1,1],[2,1],[2,2],[3,2],[0,4],[3,4]];
+const HALF = [-1,0,0,-1];
+const mirrorOf = left => left.map(([x,y])=>(7-x)+','+y);
 const LEVELS = [
-  { type:'match', title:'회전', say:'도형을 회전하여 구멍에 맞춰 보세요.', piece:L4, target:apply([-1,0,0,-1],L4), ops:['cw','ccw'] },
-  { type:'match', title:'대칭', say:'도형을 회전하고 대칭시켜 구멍에 맞춰 보세요.', piece:P5, target:apply([0,-1,-1,0],P5), ops:['cw','ccw','lr','ud','diag'] },
-  { type:'predict', title:'예측', say:'이동한 뒤의 도형은 어떤 모양일까요?', qs:[
+  { type:'match', title:'회전', say:'도형을 회전하여 구멍에 맞춰 보세요.', ops:['cw','ccw'], rounds:[
+    { piece:L4, target:apply(HALF,L4) },
+    { piece:P5, target:apply(OPS.ccw.m,P5) },
+    { piece:F5, target:apply(HALF,F5) } ] },
+  { type:'match', title:'대칭', say:'도형을 회전하고 대칭시켜 구멍에 맞춰 보세요.', ops:['cw','ccw','lr','ud','diag'], rounds:[
+    { piece:P5, target:apply([0,-1,-1,0],P5) },
+    { piece:L4, target:apply(OPS.lr.m,L4) },
+    { piece:F5, target:apply(OPS.cw.m,apply(OPS.ud.m,F5)) } ] },
+  { type:'predict', title:'예측', say:'이동한 뒤의 도형은 어떤 모양일까요?', rounds:[ { qs:[
     { piece:L4, op:'cw',   opts:['cw','ccw','lr'] },
     { piece:P5, op:'lr',   opts:['lr','ud','half'] },
     { piece:L4, op:'half', opts:['half','ud','cw'] },
-    { piece:P5, op:'diag', opts:['diag','cw','lr'] } ] },
-  { type:'mirror', title:'선대칭', say:'대칭축을 기준으로 선대칭이 되도록 칸을 채워 보세요.', cols:8, rows:5, left:TREE, target:TREE.map(([x,y])=>(7-x)+','+y) },
-  { type:'fill', title:'채우기', say:'도형을 회전하고 대칭시켜 판에 놓아 보세요. 모든 칸을 채웁니다.', piece:L4, ops:['cw','ccw','lr','ud'],
-    solution:[ [[0,0],[1,0],[2,0],[0,1]], [[3,0],[1,1],[2,1],[3,1]], [[1,2],[2,2],[3,2],[3,3]], [[0,2],[0,3],[1,3],[2,3]] ] },
+    { piece:P5, op:'diag', opts:['diag','cw','lr'] } ] } ] },
+  { type:'mirror', title:'선대칭', say:'대칭축을 기준으로 선대칭이 되도록 칸을 채워 보세요.', cols:8, rows:5, rounds:[
+    { left:TREE, target:mirrorOf(TREE) },
+    { left:STEPS, target:mirrorOf(STEPS) },
+    { left:DOTS, target:mirrorOf(DOTS) } ] },
+  { type:'fill', title:'채우기', rounds:[
+    { say:'도형을 회전하고 대칭시켜 판에 놓아 보세요. 모든 칸을 채웁니다.', piece:L4, ops:['cw','ccw','lr','ud'],
+      solution:[ [[0,0],[1,0],[2,0],[0,1]], [[3,0],[1,1],[2,1],[3,1]], [[1,2],[2,2],[3,2],[3,3]], [[0,2],[0,3],[1,3],[2,3]] ] },
+    { say:'도형을 회전하여 판에 놓아 보세요. 모든 칸을 채웁니다.', piece:T4, ops:['cw','ccw'],
+      solution:[ [[0,0],[1,0],[2,0],[1,1]], [[3,0],[2,1],[3,1],[3,2]], [[0,1],[0,2],[1,2],[0,3]], [[2,2],[1,3],[2,3],[3,3]] ] } ] },
 ];
+// one puzzle: the level's shared settings plus this round's own
+const LV = (lv, r) => { const L = LEVELS[lv]; return { ...L, ...(L.rounds[r] || L.rounds[0]), n:L.rounds.length }; };
+const bestOf = (best, lv) => Math.min(...LEVELS[lv].rounds.map((_, r) => best[lv+'.'+r] || 0));
 
 class Component extends DCLogic {
   constructor(props){
@@ -282,35 +309,40 @@ class Component extends DCLogic {
     this.pieceRef = React.createRef(); this.wrapRef = React.createRef(); this.planeRef = React.createRef();
     let saved = {}; try { saved = JSON.parse(localStorage.getItem(STORE)||'{}') || {}; } catch(e){}
     const lv = Math.min(LEVELS.length-1, Math.max(0, saved.lv ?? 0));
-    this.state = { scale:1, best:saved.best||{}, sound:saved.sound ?? props.sound ?? true, score:saved.score ?? props.scoring ?? true, flash:null, ...this.fresh(lv) };
+    const round = Math.min(LEVELS[lv].rounds.length-1, Math.max(0, saved.round ?? 0));
+    this.state = { scale:1, best:saved.best||{}, sound:saved.sound ?? props.sound ?? true, score:saved.score ?? props.scoring ?? true, flash:null, ...this.fresh(lv, round) };
     this.g = null; this.held = null;
   }
   componentDidMount(){
     const el = this.wrapRef.current; if(!el) return;
-    const fit = () => this.setState({ scale: Math.min(1.2, el.clientWidth/660) });
-    this.ro = new ResizeObserver(fit); this.ro.observe(el); fit();
+    // the stage is as large as the width allows, but never so tall that the page has to scroll
+    this.fit = () => { const w = this.wrapRef.current; if(!w) return;
+      const top = w.getBoundingClientRect().top + window.scrollY, availH = window.innerHeight - top - 16;
+      const sc = Math.min(1.2, w.clientWidth/660, Math.max(0.8, availH/380));
+      if(Math.abs(sc - this.state.scale) > 0.002) this.setState({ scale: sc }); };
+    this.ro = new ResizeObserver(this.fit); this.ro.observe(el); window.addEventListener('resize', this.fit); this.fit();
     this.evs = { pointerdown:e=>this.pDown(e), pointermove:e=>this.pMove(e), pointerup:e=>this.pUp(e), pointercancel:e=>this.pCancel(e) };
     for(const k in this.evs) el.addEventListener(k, this.evs[k]);
   }
   componentWillUnmount(){
-    this.ro && this.ro.disconnect(); this.clearTimers();
+    this.ro && this.ro.disconnect(); this.fit && window.removeEventListener('resize', this.fit); this.clearTimers();
     const el = this.wrapRef.current; if(el && this.evs) for(const k in this.evs) el.removeEventListener(k, this.evs[k]);
   }
   clearTimers(){ clearTimeout(this.tm); clearTimeout(this.readyTm); clearTimeout(this.flashTm); if(this.g) clearTimeout(this.g.timer); }
-  fresh(lv){
-    const L = LEVELS[lv];
-    return { lv, moves:0, hintUsed:false, hint:null, busy:false, won:false, ready:false, stars:0, history:[], log:[], net:[1,0,0,1],
+  fresh(lv, round){
+    const L = LV(lv, round || 0);
+    return { lv, round:round || 0, moves:0, hintUsed:false, hint:null, busy:false, won:false, ready:false, stars:0, history:[], log:[], net:[1,0,0,1],
       flipped:false, placed:[], right:[], ghost:null, q:0, wrong:[], firstTry:0, qMiss:false, picked:null,
       piece: L.type==='predict' ? L.qs[0].piece : norm(L.piece || [[0,0]]) };
   }
-  load(lv){
+  load(lv, round){
     this.clearTimers(); this.g = null; this.held = null;
     if(this.winAnim){ this.winAnim.cancel(); this.winAnim=null; }
     this.setT('');
-    this.setState(this.fresh(lv)); this.persist({lv});
+    this.setState(this.fresh(lv, round || 0), () => this.fit && this.fit()); this.persist({lv, round:round || 0});
   }
   persist(over){ const s = {...this.state, ...(over||{})};
-    try { localStorage.setItem(STORE, JSON.stringify({best:s.best, lv:s.lv, score:s.score, sound:s.sound})); } catch(e){} }
+    try { localStorage.setItem(STORE, JSON.stringify({best:s.best, lv:s.lv, round:s.round, score:s.score, sound:s.sound})); } catch(e){} }
   snap(s){ return { piece:s.piece, flipped:s.flipped, net:s.net, log:s.log, placed:s.placed, right:s.right, moves:s.moves }; }
   beep(kind){
     if(!this.state.sound) return;
@@ -362,7 +394,7 @@ class Component extends DCLogic {
     this.setState({ piece, flipped, net, log, moves, history:hist, busy:false, ready:false, hint:null, ghost:null }, after);
   }
   doOp(id, byGesture){
-    const s = this.state, L = LEVELS[s.lv]; if(s.won || !(L.ops||[]).includes(id)) return;
+    const s = this.state, L = LV(s.lv, s.round); if(s.won || !(L.ops||[]).includes(id)) return;
     if(s.busy){ this.held = () => this.doOp(id, byGesture); return; }
     clearTimeout(this.readyTm);
     const op = OPS[id];
@@ -371,7 +403,7 @@ class Component extends DCLogic {
     this.animate(op, a => this.commitOps([id], () => { a && a.cancel(); this.afterOp(); }));
   }
   afterOp(){
-    const s = this.state, L = LEVELS[s.lv];
+    const s = this.state, L = LV(s.lv, s.round);
     if(L.type==='match' && key(s.piece)===key(L.target)) this.setState({ready:true}, () => { this.resumeReady(); this.runHeld(); });
     else this.runHeld();
   }
@@ -385,24 +417,24 @@ class Component extends DCLogic {
     ], {duration:800, easing:'ease-in-out', fill:'forwards'});
     this.winAnim.onfinish = () => { this.beep('place'); this.tm = setTimeout(()=>this.finish(), 400); };
   }
-  minMoves(lv){
-    const L = LEVELS[lv];
+  minMoves(){
+    const L = LV(this.state.lv, this.state.round);
     if(L.type==='match') return bfs(L.piece, key(L.target), L.ops).length;
     if(L.type==='predict') return L.qs.length;
     if(L.type==='mirror') return L.target.length;
     return L.solution.reduce((n,c)=>n+bfs(L.piece,key(c),L.ops).length+1, 0);
   }
   finish(){
-    const s = this.state, L = LEVELS[s.lv];
-    const extra = s.moves - this.minMoves(s.lv), free = L.type==='fill' ? 2 : 0;
+    const s = this.state, L = LV(s.lv, s.round);
+    const extra = s.moves - this.minMoves(), free = L.type==='fill' ? 2 : 0;
     let stars = extra<=free ? 3 : extra<=free+4 ? 2 : 1;
     if(s.hintUsed) stars = Math.min(stars, 2);
-    const best = s.score ? {...s.best, [s.lv]:Math.max(stars, s.best[s.lv]||0)} : s.best;
+    const best = s.score ? {...s.best, [s.lv+'.'+s.round]:Math.max(stars, s.best[s.lv+'.'+s.round]||0)} : s.best;
     this.persist({best}); this.beep('good');
     this.setState({ won:true, stars, best, busy:false, ready:false });
   }
   pick(id){
-    const s = this.state, L = LEVELS[s.lv]; if(s.busy || s.won) return;
+    const s = this.state, L = LV(s.lv, s.round); if(s.busy || s.won) return;
     const Q = L.qs[s.q]; if(s.wrong.includes(id)) return;
     if(id !== Q.op){ this.beep('bad'); this.setState({ wrong:[...s.wrong,id], moves:s.moves+1, qMiss:true }); return; }
     const op = OPS[id]; this.beep(op.flip?'flip':'turn');
@@ -412,13 +444,13 @@ class Component extends DCLogic {
     }), () => { a && a.cancel(); this.tm = setTimeout(()=>this.nextQ(), 900); }));
   }
   nextQ(){
-    const s = this.state, L = LEVELS[s.lv];
+    const s = this.state, L = LV(s.lv, s.round);
     if(s.q+1 >= L.qs.length) return this.finish();
     const q = s.q+1;
     this.setState({ q, piece:L.qs[q].piece, flipped:false, wrong:[], qMiss:false, busy:false, picked:null });
   }
   setCell(x, y, on){
-    const L = LEVELS[this.state.lv]; if(this.state.busy || this.state.won || x < L.cols/2) return;
+    const L = LV(this.state.lv, this.state.round); if(this.state.busy || this.state.won || x < L.cols/2) return;
     const k = x+','+y;
     if(this.state.right.includes(k) === on) return;
     this.beep(on?'place':'turn');
@@ -440,7 +472,7 @@ class Component extends DCLogic {
   // piece with its first block on board cell (x, y)
   placement(x, y){ const a = this.state.piece[0]; return this.placementAt(x-a[0], y-a[1]); }
   place(abs, after){
-    const s = this.state, L = LEVELS[s.lv];
+    const s = this.state, L = LV(s.lv, s.round);
     this.beep('place');
     const placed = [...s.placed, {cells:abs, flipped:s.flipped}];
     this.setState({ placed, piece:norm(L.piece), flipped:false, net:[1,0,0,1], moves:s.moves+1, history:[...s.history,this.snap(s)], ghost:null, hint:null, busy:false }, () => {
@@ -450,7 +482,7 @@ class Component extends DCLogic {
     });
   }
   tapCell(cell){
-    const s = this.state, L = LEVELS[s.lv]; if(s.won) return;
+    const s = this.state, L = LV(s.lv, s.round); if(s.won) return;
     const [x,y] = cell;
     if(L.type==='mirror'){ this.setCell(x, y, !s.right.includes(x+','+y)); return; }
     if(L.type!=='fill') return;
@@ -467,7 +499,7 @@ class Component extends DCLogic {
     this.setState({ ...s.history[s.history.length-1], history:s.history.slice(0,-1), hint:null, ghost:null, ready:false });
   }
   hint(){
-    const s = this.state, L = LEVELS[s.lv]; if(s.busy || s.won || s.ready) return;
+    const s = this.state, L = LV(s.lv, s.round); if(s.busy || s.won || s.ready) return;
     const used = s.score ? true : s.hintUsed;
     let h = null;
     if(L.type==='match'){ const p = bfs(s.piece, key(L.target), L.ops); if(p && p.length) h = {op:p[0]}; }
@@ -480,7 +512,8 @@ class Component extends DCLogic {
       if(k) h = { cell:k.split(',').map(Number) };
     }
     if(L.type==='fill'){
-      const shapes = this.shapes || (this.shapes = orients(L.piece, L.ops));
+      const sk = s.lv+'.'+s.round; if(this.shapesKey !== sk){ this.shapesKey = sk; this.shapes = orients(L.piece, L.ops); }
+      const shapes = this.shapes;
       const occ = this.occupied(), e = firstEmpty(occ);
       let bestFit = null;
       if(e) for(const sh of shapes){ const abs = fitAt(sh, e, occ); if(!abs) continue;
@@ -524,7 +557,7 @@ class Component extends DCLogic {
   /* ---------- touch: gestures ---------- */
   pDown(e){
     if(e.pointerType==='mouse' && e.button!==0) return;
-    const s = this.state, L = LEVELS[s.lv], t = L.type, el = this.wrapRef.current;
+    const s = this.state, L = LV(s.lv, s.round), t = L.type, el = this.wrapRef.current;
     if(s.won || t==='predict') return;
     const g0 = this.g;
     if(g0){
@@ -566,8 +599,8 @@ class Component extends DCLogic {
     g.last = [x,y];
     if(g.mode==='turn'){ const a = this.angleAt(x, y); g.acc += wrap180(a-g.ang); g.ang = a; this.setT(`rotateZ(${g.acc}deg)`); }
     if(g.mode==='drag') this.dragTo(x, y);
-    if(g.mode==='cell' && LEVELS[this.state.lv].type==='mirror'){
-      const L = LEVELS[this.state.lv], c = this.cellAt(x, y, L);
+    if(g.mode==='cell' && LV(this.state.lv, this.state.round).type==='mirror'){
+      const L = LV(this.state.lv, this.state.round), c = this.cellAt(x, y, L);
       if(!g.painting && c && (Math.hypot(x-g.x0, y-g.y0) > 10 || c[0]!==g.cell[0] || c[1]!==g.cell[1])){
         g.painting = true; g.want = !this.state.right.includes(g.cell[0]+','+g.cell[1]);
         this.setCell(g.cell[0], g.cell[1], g.want);
@@ -596,7 +629,7 @@ class Component extends DCLogic {
   flick(dx, dy){
     const a = ((Math.atan2(dy, dx)*180/Math.PI) % 180 + 180) % 180;
     const id = (a<22.5 || a>=157.5) ? 'lr' : (a>=67.5 && a<112.5) ? 'ud' : 'diag';
-    if((LEVELS[this.state.lv].ops||[]).includes(id)) this.doOp(id, true); else this.resumeReady();
+    if((LV(this.state.lv, this.state.round).ops||[]).includes(id)) this.doOp(id, true); else this.resumeReady();
   }
   endTurn(acc){
     const steps = Math.round(acc/90), from = `rotateZ(${acc}deg)`;
@@ -611,7 +644,7 @@ class Component extends DCLogic {
     this.tween(from, `rotateZ(${steps*90}deg)`, 150, a => this.commitOps(ids, () => { a && a.cancel(); this.afterOp(); }));
   }
   startDrag(){
-    const g = this.g, s = this.state, t = LEVELS[s.lv].type;
+    const g = this.g, s = this.state, t = LV(s.lv, s.round).type;
     if(!g || g.mode!=='pending' || s.busy || s.won || (t!=='fill' && t!=='match')) return;
     g.mode = 'drag'; this.beep('tick');
     if(s.hint || s.ghost) this.setState({hint:null, ghost:null});
@@ -623,7 +656,7 @@ class Component extends DCLogic {
     const cx = P[0], cy = P[1] - ph*S/2 - 20;          // the piece rides above the finger
     g.d = [cx-BCX, cy-BCY];
     this.setT(`translate3d(${g.d[0]}px,${g.d[1]}px,40px)`);
-    if(LEVELS[s.lv].type!=='fill') return;
+    if(LV(s.lv, s.round).type!=='fill') return;
     const ox = Math.round((cx-pw*S/2-368)/S), oy = Math.round((cy-ph*S/2-48)/S);
     const over = ox>-pw && ox<4 && oy>-ph && oy<4, k = over ? ox+','+oy : '';
     if(k===g.gk) return;
@@ -631,7 +664,7 @@ class Component extends DCLogic {
     this.setState({ ghost: over ? this.placementAt(ox, oy) : null });
   }
   endDrag(g){
-    const s = this.state, L = LEVELS[s.lv], d = g.d || [0,0];
+    const s = this.state, L = LV(s.lv, s.round), d = g.d || [0,0];
     const from = `translate3d(${d[0]}px,${d[1]}px,40px)`;
     const back = loud => { if(loud) this.beep('bad'); this.setState({busy:true});
       this.tween(from, ZERO, 250, a => { a && a.cancel(); this.idle(); }); };
@@ -659,7 +692,7 @@ class Component extends DCLogic {
   }
 
   renderVals(){
-    const s = this.state, L = LEVELS[s.lv], t = L.type;
+    const s = this.state, L = LV(s.lv, s.round), t = L.type;
     const two = this.props.twoTone ?? true;
     const col = (flipped, alt) => { const c = two&&flipped?'accent-2':'accent', o = two?(flipped?'accent':'accent-2'):'accent';
       return { top:`var(--color-${c}-${alt?300:400})`, side:`var(--color-${c}-500)`, dark:`var(--color-${c}-600)`, bottom:`var(--color-${o}-400)` }; };
@@ -721,20 +754,20 @@ class Component extends DCLogic {
     if(t==='predict') explain = ['회전은 도형을 한 점을 중심으로 돌리는 이동입니다. 90° 회전을 두 번 하면 180° 회전이 됩니다.', '대칭은 대칭축을 기준으로 도형을 뒤집는 이동입니다. 거울에 비친 모양과 같습니다.'];
     if(t==='mirror') explain = ['선대칭에서는 서로 짝이 되는 두 칸이 대칭축에서 같은 거리에 있습니다.', '대칭축을 따라 판을 접으면 두 쪽이 완전히 겹칩니다.'];
     if(t==='fill') explain = [`회전 ${nTurns}번, 대칭 ${nFlips}번을 사용했습니다.`,
-      two ? '파란색 도형은 회전만 한 도형입니다. 분홍색 도형은 대칭시킨 도형이어서 파란색 도형과 좌우가 반대입니다.' : '대칭시킨 도형은 회전만 한 도형과 좌우가 반대입니다.'];
+      !L.ops.some(id=>OPS[id].flip) ? '같은 도형을 회전하기만 해도 판을 빈틈없이 채울 수 있습니다.' : two ? '파란색 도형은 회전만 한 도형입니다. 분홍색 도형은 대칭시킨 도형이어서 파란색 도형과 좌우가 반대입니다.' : '대칭시킨 도형은 회전만 한 도형과 좌우가 반대입니다.'];
 
     const best = s.best;
     return {
       pieceRef:this.pieceRef, wrapRef:this.wrapRef, planeRef:this.planeRef,
-      levelTabs: LEVELS.map((lv,i)=>({ n:i+1, title:lv.title, stars: s.score ? '★'.repeat(best[i]||0)+'☆'.repeat(3-(best[i]||0)) : '',
+      levelTabs: LEVELS.map((lv,i)=>({ n:i+1, title:lv.title, stars: s.score ? '★'.repeat(bestOf(best,i))+'☆'.repeat(3-bestOf(best,i)) : '',
         bg:i===s.lv?'var(--color-accent-700)':'transparent', fg:i===s.lv?'var(--color-bg)':'var(--color-text)',
-        border:i===s.lv?'var(--color-accent-700)':'var(--color-divider)', go:()=>this.load(i) })),
+        border:i===s.lv?'var(--color-accent-700)':'var(--color-divider)', go:()=>this.load(i, 0) })),
       showScore: s.score, soundOn: s.sound,
       scoreLabel: s.score ? '★ 점수 켬' : '★ 점수 끔',
       toggleScore: () => this.setState({score:!s.score}, () => this.persist()),
       soundLabel: s.sound ? '♪ 소리 켬' : '♪ 소리 끔',
       toggleSound: () => this.setState({sound:!s.sound}, () => this.persist()),
-      kicker:`${s.lv+1}단계 / ${LEVELS.length}단계`, title:L.title, say:L.say,
+      kicker:`${s.lv+1}단계 / ${LEVELS.length}단계` + (L.n>1 ? ` · 문제 ${s.round+1} / ${L.n}` : ''), title:L.title, say:L.say,
       scale:s.scale, stageH:Math.round(380*s.scale),
       showDisc: t!=='mirror', disc:{left:benchCx-130},
       showPlate: !!plate, plate: plate||{},
@@ -746,15 +779,15 @@ class Component extends DCLogic {
       showUndo: t!=='predict', undoRing: s.hint && s.hint.undo ? 'var(--color-accent-2)' : 'transparent',
       undo: () => this.undo(), hint: () => this.hint(), moves: s.moves,
       extraInfo: t==='fill' ? `놓은 도형 ${s.placed.length} / 4` : '',
-      won: s.won, doneKicker:`${s.lv+1}단계 완료`,
+      won: s.won, doneKicker: L.n>1 ? `${s.lv+1}단계 문제 ${s.round+1} 완료` : `${s.lv+1}단계 완료`,
       starList: [0,1,2].map(i=>({ color: i<s.stars ? 'var(--color-accent-2)' : 'var(--color-neutral-300)' })),
       doneMoves: t==='predict' ? `${L.qs.length}문제 중 ${s.firstTry}문제를 한 번에 맞혔습니다` : `이동 ${s.moves}번`,
       hasLog: (t==='match' || t==='fill') && s.log.length>0,
       logChips: s.log.map(id=>({ glyph:OPS[id].glyph, color:opColor(id) })),
       explain,
-      nextLabel: s.lv < LEVELS.length-1 ? '다음 단계' : '1단계로',
-      next: () => this.load((s.lv+1) % LEVELS.length),
-      replay: () => this.load(s.lv),
+      nextLabel: s.round < L.n-1 ? '다음 문제' : s.lv < LEVELS.length-1 ? '다음 단계' : '1단계로',
+      next: () => s.round < L.n-1 ? this.load(s.lv, s.round+1) : this.load((s.lv+1) % LEVELS.length, 0),
+      replay: () => this.load(s.lv, s.round),
     };
   }
 }

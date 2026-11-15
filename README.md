@@ -23,11 +23,11 @@ Running from this repository has not been tested. The game has been tried on an 
 
 ## Levels
 
-1. 회전: turn an L-block to fit a hole
-2. 대칭: turn and flip a P-block to fit a mirrored hole
+1. 회전: turn a block to fit a hole, three puzzles
+2. 대칭: turn and flip a block to fit a mirrored hole, three puzzles
 3. 예측: predict the result of a move, four questions
-4. 선대칭: complete a mirrored shape across the 대칭축
-5. 채우기: fill a 4×4 board with four L-blocks
+4. 선대칭: complete a mirrored shape across the 대칭축, three puzzles
+5. 채우기: fill a 4×4 board with four L-blocks, then four T-blocks
 
 ## Controls
 
