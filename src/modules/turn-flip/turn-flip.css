@@ -1,0 +1,25 @@
+body{margin:0;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body),'Noto Serif KR',serif;word-break:keep-all;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+h1,h2{font-family:var(--font-heading),'Noto Serif KR',serif}
+a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
+button{font-family:var(--font-body),'Noto Serif KR',serif}
+@keyframes tfPulse{0%,100%{outline-color:transparent}50%{outline-color:var(--color-accent)}}
+.tf-hole{outline:4px solid transparent}
+.tf-ready{animation:tfPulse 1s ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){.tf-ready{animation:none;outline-color:var(--color-accent)}}
+.tf-side{flex:0 0 236px;display:flex;flex-direction:column;gap:12px}
+@media (max-width:820px){.tf-side{flex:1 1 100%}}
+
+.tf-root{max-width:980px;padding:20px 28px 16px;display:flex;flex-direction:column;gap:20px;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+/* the four corner markers the touch code measures to map fingers onto the tilted table */
+.tf-m{position:absolute;width:1px;height:1px;pointer-events:none}
+/* zero-size 3D layers inside the table plane; they keep children in 3D and are never hit by taps */
+.tf-layer{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d}
+
+/* hover only where a real pointer can hover, so a tapped button on the iPad doesn't stay highlighted */
+@media (hover:hover){
+  .h-n200:hover{background:var(--color-neutral-200)!important}
+  .h-a100:hover{background:var(--color-accent-100)!important}
+  .h-a800:hover{background:var(--color-accent-800)!important}
+}
+.a-a200:active{background:var(--color-accent-200)!important}
+.a-a900:active{background:var(--color-accent-900)!important}

@@ -1,0 +1,10 @@
+{
+  "name": "fields-math-playground",
+  "private": true,
+  "type": "module",
+  "description": "Fields Math Playground: 3D math books for teachers. Plain ES modules, no build step.",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "serve": "python3 -m http.server 8080"
+  }
+}
